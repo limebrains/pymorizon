@@ -38,7 +38,8 @@ def get_category(category='nieruchomosci', location=None, transaction_type=None,
     :return: List of all offers for given parameters
     :rtype: list
     """
-    assert False
+    # assert False
+    no_of_pages = get_max_page(url)
     return 'dd'
 
 
