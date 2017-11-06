@@ -1,0 +1,6 @@
+mock
+requests
+https://github.com/limebrains/scrapper-helpers/archive/master.zip
+beautifulsoup4
+pytest
+pytest-cov

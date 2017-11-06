@@ -12,7 +12,7 @@ if (2, 7) <= sys.version_info < (3, 6):
 
     DEBUG = os.environ.get('DEBUG')
 
-    logger = logging.getLogger('olx')
+    logger = logging.getLogger('morizon')
     logging.basicConfig(level=logging.DEBUG)
 
 BASE_URL = 'https://www.morizon.pl'
