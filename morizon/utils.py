@@ -5,18 +5,36 @@ import logging
 import sys
 import requests
 from . import BASE_URL
-from scrapper_helpers.utils import replace_all
+from scrapper_helpers.utils import replace_all, get_random_user_agent
 
 log = logging.getLogger(__file__)
 POLISH_CHARACTERS_MAPPING = {"ą": "a", "ć": "c", "ę": "e", "ł": "l", "ń": "n", "ó": "o", "ś": "s", "ż": "z", "ź": "z"}
 
+
 def get_city(location):
     location = replace_all(location.lower(), POLISH_CHARACTERS_MAPPING)
-    city = location.split()
-    for element in city:
-        if element == 'ul.':
-            city.remove(city.index(element))
+    city = location.replace(' ', '-')
     return city
+
+
+def get_url(category='nieruchomosci', city=None, street=None, transaction_type=None, **filters):
+    url = BASE_URL
+    if transaction_type != '':
+        url += '/' + transaction_type
+    url += '/' + category
+    if city:
+        url += '/' + get_city(city)
+    if street:
+        url += '/' + get_city(street)
+    if len(filters) > 0:
+        i = 0
+        for param in filters:
+            if i == 0:
+                url += '/?ps' + param + '=' + str(filters[param])
+            else:
+                url += '&ps' + param + '=' + str(filters[param])
+    return url
+
 
 def get_content_from_sorce(url):
     """ Connects with given url
