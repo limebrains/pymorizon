@@ -3,86 +3,40 @@
 
 from bs4 import BeautifulSoup
 import json
-from .utils import get_city, get_url, get_content_from_sorce
+from .utils import get_url, get_content_from_source, encode_text_to_url
 import logging
 log = logging.getLogger(__file__)
 logging.basicConfig(level=logging.DEBUG)
 
+
 def get_max_page(url):
-    content = get_content_from_sorce(url)
+    markup = BeautifulSoup(get_content_from_source(url).content, 'html.parser')
+    last_page = markup.find_all('a', {'class': 'navigate next'})
+    if not last_page:
+        return 1
+    num = last_page[0].previous.previous
+    return int(num)
 
 
-
-def get_category(category='nieruchomosci', city=None, streat=None, transaction_type=None, url=None, **filters):
-    """ Parses available offer urls from given category from every page
-
-    :param url: User defined url for morizon page with offers. It overrides category parameters and applies search filters.
-    :param category: Main category
-    :param city: Region of search
-    :param streat: Region of search
-    :param filters: Dictionary with additional filters. Following example dictionary contains every possible filter
-    with examples of it's values.
-
-    :Example:
-
-    input_dict = {
-        "[filter_float_price:from]": 2000, # minimal price
-        "[filter_float_price:to]": 3000, # maximal price
-        "[filter_enum_floor_select][0]": 3, # desired floor, enum: from -1 to 11 (10 and more) and 17 (attic)
-        "[filter_enum_furniture][0]": True, # furnished or unfurnished offer
-        "[filter_enum_builttype][0]": "blok", # valid build types:
-        #                                             blok, kamienica, szeregowiec, apartamentowiec, wolnostojacy, loft
-        "[filter_float_m:from]": 25, # minimal surface
-        "[filter_float_m:to]": 50, # maximal surface
-        "[filter_enum_rooms][0]": 2 # desired number of rooms, enum: from 1 to 4 (4 and more)
-    }
-
-    :type url: str, None
-    :type category: str, None
-    :type city: str, None
-    :type streat: str, None
-    :type filters: dict
-    :return: List of all offers for given parameters
-    :rtype: list
-    """
+def get_category(category='nieruchomosci', city=None, street=None, transaction_type=None, url=None, **filters):
     if not url:
-        city = get_city(city)
-        url = get_url(category, city, streat, transaction_type, **filters)
-    
-    '''
+        city = encode_text_to_url(city or '')
+        street = encode_text_to_url(street or '')
+        url = get_url(category, city, street, transaction_type, **filters)
     offers = []
-    no_of_pages = get_max_page(url)
-    for i in range(1, no_of_pages+1):
-        offer = get_offers_from_page(i, url=url)
-    '''
-    return url
-
-
-def get_offers_from_page(page, category='nieruchomosci', city=None, streat=None, transaction_type=None, url=None, **filters):
-    """ Parses offers for one specific page of given category with filters.
-
-        :param page: Page number
-        :param url: User defined url for morizon page with offers. It overrides category parameters and applies search filters.
-        :param category: Category of property
-        :param city: Region of search
-        :param streat: Region of search
-        :param transaction_type: Type of transaction # buy/rent
-        :param filters: See :meth category.get_category for reference
-        :type page: int
-        :type url: str, None
-        :type category: str, None
-        :type city: str, None
-        :type streat: str, None
-        :type filters: dict
-        :return: List of all offers for given page and parameters
-        :rtype: list
-
-    if not url:
-
-    else:
-        sorce = url
-
-    response = get_content_from_sorce(sorce)
-    offers = parse_available_offers(response.content)
+    max_num_of_pages = get_max_page(url)
+    for i in range(1, max_num_of_pages+1):
+        offers_from_page = get_offers_from_page(url + '&page=' + str(i))
+        for offer_url in offers_from_page:
+            offers.append(offer_url)
     return offers
- """
+
+
+def get_offers_from_page(url):
+    markup = BeautifulSoup(get_content_from_source(url).content, 'html.parser')
+    links = markup.find_all('a', {'class': 'property_link'})
+    offers = []
+    for link in links:
+        if 'https://www.morizon.pl/oferta/' in link.get('href'):
+            offers.append(link.get('href'))
+    return offers
