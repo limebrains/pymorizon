@@ -24,7 +24,9 @@ def get_rooms_for_offer(markup):
 
 def get_floor_for_offer(markup):
     soup = markup.find('table')
-    floor_row = soup.find("th", text=re.compile(r'Piętro: '))
+    floor_row = soup.find("th", text=re.compile(r'Piętro:|Liczba pięter:'))
+    if not floor_row:
+        return 0
     floor_row = floor_row.find_parent('tr').find('td').text
     return floor_row
 
