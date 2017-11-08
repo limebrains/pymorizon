@@ -4,6 +4,7 @@
 import logging
 import sys
 import requests
+from urllib.parse import quote
 from . import BASE_URL
 from scrapper_helpers.utils import replace_all, get_random_user_agent
 
@@ -30,9 +31,9 @@ def get_url(category='nieruchomosci', city=None, street=None, transaction_type=N
         i = 0
         for param in filters:
             if i == 0:
-                url += '/?ps' + param + '=' + str(filters[param])
+                url += '/?ps' + quote(param) + '=' + str(filters[param])
             else:
-                url += '&ps' + param + '=' + str(filters[param])
+                url += '&ps' + quote(param) + '=' + str(filters[param])
             i += 1
     return url
 

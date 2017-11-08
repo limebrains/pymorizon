@@ -8,7 +8,7 @@ from morizon.utils import get_url
 
 
 @pytest.mark.parametrize('args, filter, expected_value', [
-    (('mieszkania', 'Warszawa', 'Stary Mokotów', 'do-wynajecia'), {'[number_of_rooms_from]': 2, '[number_of_rooms_to]': 4}, 'https://www.morizon.pl/do-wynajecia/mieszkania/warszawa/stary-mokotow/?ps[number_of_rooms_from]=2&ps[number_of_rooms_to]=4'),
+    (('mieszkania', 'Gynia', 'Witomino Leśniczówka', 'do-wynajecia'), {'[number_of_rooms_from]': 2}, 'https://www.morizon.pl/do-wynajecia/mieszkania/warszawa/stary-mokotow/?ps[number_of_rooms_from]=2&ps[number_of_rooms_to]=4'),
 ])
 def test_get_url(args, filter, expected_value):
     assert get_url(*args, **filter) == expected_value

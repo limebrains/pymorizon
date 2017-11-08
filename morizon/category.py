@@ -3,6 +3,7 @@
 
 from bs4 import BeautifulSoup
 import json
+from urllib.parse import quote
 from .utils import get_url, get_content_from_source, encode_text_to_url
 import logging
 log = logging.getLogger(__file__)
@@ -19,6 +20,7 @@ def get_max_page(url):
 
 
 def get_category(category='nieruchomosci', city=None, street=None, transaction_type=None, url=None, **filters):
+    if type(url) == type({}): filters, url = url, None
     if not url:
         city = encode_text_to_url(city or '')
         street = encode_text_to_url(street or '')
