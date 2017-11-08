@@ -9,29 +9,33 @@ from morizon.utils import get_content_from_source
 
 
 def get_price_for_offer(markup):
-    prices = markup.find_all(class_='paramIconPrice')
-    return prices[0].text
+    price = markup.find_all(class_='paramIconPrice')[0].text
+    price = re.findall(r'\d+,\d+|\d+', price)[0]
+    return float(price)
 
 
 def get_surface_for_offer(markup):
     area = markup.find_all(class_='paramIconLivingArea')[0].text
-    area = area[:area.index('m')]
-    return area
+    area = re.findall(r'\d+,\d+|\d+', area)[0]
+    area = area.replace(',', '.')
+    return float(area)
 
 
 def get_rooms_for_offer(markup):
-    rooms = markup.find_all(class_='paramIconNumberOfRooms')
-    return rooms[0].text
+    rooms = markup.find_all(class_='paramIconNumberOfRooms')[0].text
+    rooms = re.findall(r'\d+', rooms)[0]
+    return int(rooms)
 
 
 def get_floor_for_offer(markup):
     soup = markup.find('table')
-    floor_row = soup.find("th", text=re.compile(r'Piętro:|Liczba pięter:'))
+    floor_row = soup.find("th", text=re.compile(r'Piętro:'))
     if not floor_row:
-        return
+        return None
     floor_row = floor_row.find_parent('tr').find('td').text
     floor_row = floor_row[:floor_row.index('/')]
-    return floor_row
+    floor_row = re.findall(r'\d+', floor_row)[0]
+    return int(floor_row)
 
 
 def get_city_for_offer(markup):
@@ -50,6 +54,7 @@ def get_street_for_offer(markup):
 def get_phone_for_offer(markup):
     rooms = markup.find_all(class_='phone hidden')
     return rooms[0].text
+
 
 def get_images_for_offer(markup):
     images = []
@@ -73,13 +78,14 @@ def get_offer_data(url):
     markup = BeautifulSoup(get_content_from_source(url).content, 'html.parser')
 
     return {
-        'price': replace_all(get_price_for_offer(markup), {'\n': '', 'Cena': '', ' ': '', '\xa0': ' '}),
-        'surface': replace_all(get_surface_for_offer(markup), {'\n': '', 'Powierzchnia': '', ' ': ''}),
-        'rooms': replace_all(get_rooms_for_offer(markup), {'\n': '', 'Pokoje': '', ' ': ''}),
-        'floor': replace_all(get_floor_for_offer(markup), {'\n': ''}),
+        'price': get_price_for_offer(markup),
+        'surface': get_surface_for_offer(markup),
+        'rooms': get_rooms_for_offer(markup),
+        'floor': get_floor_for_offer(markup),
         'city': get_city_for_offer(markup),
         'street': get_street_for_offer(markup),
         'phone': get_phone_for_offer(markup),
         'date_added': get_date_for_offer(markup),
-        'images': get_images_for_offer(markup)
+        'images': get_images_for_offer(markup),
+        'url': url
     }
