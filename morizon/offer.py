@@ -34,7 +34,8 @@ def get_floor_for_offer(markup):
         return None
     floor_row = floor_row.find_parent('tr').find('td').text
     floor_row = floor_row[:floor_row.index('/')]
-    floor_row = re.findall(r'\d+', floor_row)[0]
+    floor_row = re.findall(r'\d+|parter', floor_row)[0]
+    if floor_row == 'parter':  floor_row = 0
     return int(floor_row)
 
 
@@ -74,6 +75,13 @@ def get_date_for_offer(markup):
     return date_in_second
 
 
+def get_poster_for_offer(markup):
+    poster_data = markup.find(class_='ownerContact clearfix')
+    poster_header = poster_data.find('strong')
+    poster_name = re.findall(r'\w+ \w+|\w+', poster_header.text)[0]
+    return poster_name
+
+
 def get_offer_data(url):
     markup = BeautifulSoup(get_content_from_source(url).content, 'html.parser')
 
@@ -86,6 +94,7 @@ def get_offer_data(url):
         'street': get_street_for_offer(markup),
         'phone': get_phone_for_offer(markup),
         'date_added': get_date_for_offer(markup),
+        'poster_name': get_poster_for_offer(markup),
         'images': get_images_for_offer(markup),
         'url': url
     }
