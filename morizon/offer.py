@@ -4,17 +4,30 @@ import re
 import datetime as dt
 from bs4 import BeautifulSoup
 from scrapper_helpers.utils import replace_all
-
 from morizon.utils import get_content_from_source
 
 
 def get_price_for_offer(markup):
+    """ Parse price information
+
+    :param markup: Source of offer web page
+    :type markup: str str
+    :return: price of offer
+    :rtype: float
+    """
     price = markup.find_all(class_='paramIconPrice')[0].text
     price = re.findall(r'\d+,\d+|\d+', price)[0]
     return float(price)
 
 
 def get_surface_for_offer(markup):
+    """ Parse surface area of property in offer
+
+    :param markup: Source of offer web page
+    :type markup: str
+    :return: surface area of property
+    :rtype: float
+    """
     area = markup.find_all(class_='paramIconLivingArea')[0].text
     area = re.findall(r'\d+,\d+|\d+', area)[0]
     area = area.replace(',', '.')
@@ -22,42 +35,84 @@ def get_surface_for_offer(markup):
 
 
 def get_rooms_for_offer(markup):
-    rooms = markup.find_all(class_='paramIconNumberOfRooms')[0].text
+    """ Parse number of rooms in property
+
+    :param markup: Source of offer web page
+    :type markup: str
+    :return: number of rooms
+    :rtype: int
+    """
+    try:
+        rooms = markup.find_all(class_='paramIconNumberOfRooms')[0].text
+    except IndexError:
+        return None
     rooms = re.findall(r'\d+', rooms)[0]
     return int(rooms)
 
 
 def get_floor_for_offer(markup):
+    """ Parse floor information
+
+    :param markup: Source of offer web page
+    :type markup: str
+    :return: number of floor
+    :rtype: int
+    """
     soup = markup.find('table')
     floor_row = soup.find("th", text=re.compile(r'Piętro:'))
     if not floor_row:
         return None
-    floor_row = floor_row.find_parent('tr').find('td').text
-    floor_row = floor_row[:floor_row.index('/')]
-    floor_row = re.findall(r'\d+|parter', floor_row)[0]
-    if floor_row == 'parter':  floor_row = 0
-    return int(floor_row)
+    floor_raw = floor_row.find_parent('tr').find('td').text
+    floor_sanitized = replace_all(floor_raw, {'\n': '', ' ': ''}).split('/')[0]
+    floor = int(floor_sanitized) if floor_sanitized != 'parter' else 0
+    return floor
 
 
 def get_city_for_offer(markup):
-    soup = markup.find_all(class_='summaryLocation')
-    city = replace_all(soup[0].text, {'\n': '', 'Mieszkanie do wynajęcia Zapamiętaj ': ''})
-    city = city.split(', ')
-    return city[0]
+    """ Parse city information
+
+    :param markup: Source of offer web page
+    :type markup: str
+    :return: name of city
+    :rtype: str
+    """
+    nav = markup.find(class_='breadcrumbs').text.split('\n\n')
+    return replace_all(nav[4], {' ': ''})
 
 
 def get_street_for_offer(markup):
+    """ Parse street information
+
+    :param markup: Source of offer web page
+    :type markup: str
+    :return: name of street
+    :rtype: str
+    """
     soup = markup.find_all(class_='summaryLocation')
     street = replace_all(soup[0].text, {'\n': '', 'Mieszkanie do wynajęcia Zapamiętaj ': ''})
     street = street.split(', ')
     return street[-1]
 
 def get_phone_for_offer(markup):
+    """ Parse phone information
+
+    :param markup: Source of offer web page
+    :type markup: str
+    :return: phone number to poster
+    :rtype: str
+    """
     rooms = markup.find_all(class_='phone hidden')
     return rooms[0].text
 
 
 def get_images_for_offer(markup):
+    """ Parse list of images of offer
+
+    :param markup: Source of offer web page
+    :type markup: str
+    :return: list  of images or empty list if  there is no image
+    :rtype: list
+    """
     images = []
     image_list = markup.find_all(class_=re.compile(r'image\d+'))
     for link in image_list:
@@ -68,6 +123,13 @@ def get_images_for_offer(markup):
 
 
 def get_date_for_offer(markup):
+    """ Parse date information
+
+    :param markup: Source of offer web page
+    :type markup: str
+    :return: Date of adding offer
+    :rtype: int
+    """
     date = markup.find('meta', itemprop='name')
     date_added = re.findall(r'\d\d-\d\d-\d\d\d\d', date.get('content'))[0]
     date_parts = date_added.split('-')
@@ -76,6 +138,13 @@ def get_date_for_offer(markup):
 
 
 def get_poster_for_offer(markup):
+    """ Parse poster name
+
+    :param markup: Source of offer web page
+    :type markup: str
+    :return: name of the poster
+    :rtype: str
+    """
     poster_data = markup.find(class_='ownerContact clearfix')
     poster_header = poster_data.find('strong')
     poster_name = re.findall(r'\w+ \w+|\w+', poster_header.text)[0]
@@ -83,11 +152,25 @@ def get_poster_for_offer(markup):
 
 
 def get_description_for_offer(markup):
+    """ Parse description od offer
+
+    :param markup: Source of offer web page
+    :type markup: str
+    :return: description
+    :rtype: str
+    """
     description = markup.find(class_='description')
     return description.text
 
 
 def get_gps_for_offer(markup):
+    """ Parse latitude and longitude
+
+    :param markup: Source of offer web page
+    :type markup: str
+    :return: tuple with geographical coordinates or None if can't find
+    :rtype: tuple, None
+    """
     google_map = markup.find('div', class_='GoogleMap')
     if not google_map: return None
     lat = google_map.get('data-lat')
@@ -97,11 +180,25 @@ def get_gps_for_offer(markup):
 
 
 def get_voivodeship_for_offer(markup):
+    """ Parse voivodeship information
+
+    :param markup: Source of offer web page
+    :type markup: str
+    :return: name of voivodeship
+    :rtype: str
+    """
     nav = markup.find(class_='breadcrumbs').text.split('\n\n')
-    return nav[3]
+    return replace_all(nav[3], {' ': ''})
 
 
 def get_offer_data(url):
+    """ Parse data from offer page url
+
+    :param url: web page with offer
+    :type url: str
+    :return: Dictionary with details of an offer
+    :rtype: dict
+    """
     markup = BeautifulSoup(get_content_from_source(url).content, 'html.parser')
 
     return {
