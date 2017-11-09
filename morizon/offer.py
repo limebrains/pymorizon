@@ -82,6 +82,11 @@ def get_poster_for_offer(markup):
     return poster_name
 
 
+def get_description_for_offer(markup):
+    description = markup.find(class_='description')
+    return description.text
+
+
 def get_offer_data(url):
     markup = BeautifulSoup(get_content_from_source(url).content, 'html.parser')
 
@@ -95,6 +100,7 @@ def get_offer_data(url):
         'phone': get_phone_for_offer(markup),
         'date_added': get_date_for_offer(markup),
         'poster_name': get_poster_for_offer(markup),
+        'description': get_description_for_offer(markup),
         'images': get_images_for_offer(markup),
         'url': url
     }
