@@ -3,7 +3,7 @@
 import re
 import datetime as dt
 from bs4 import BeautifulSoup
-from scrapper_helpers.utils import replace_all
+from scrapper_helpers.utils import replace_all, caching, key_md5
 from morizon.utils import get_content_from_source
 
 
@@ -88,10 +88,38 @@ def get_street_for_offer(markup):
     :return: name of street
     :rtype: str
     """
-    soup = markup.find_all(class_='summaryLocation')
-    street = replace_all(soup[0].text, {'\n': '', 'Mieszkanie do wynajęcia Zapamiętaj ': ''})
-    street = street.split(', ')
-    return street[-1]
+    soup = markup.find_all(class_='summaryLocation')[0]
+    street_parts = soup.text.replace('\n\n', '').split('\n')
+    print(street_parts[-2])
+    return street_parts[-2]
+
+'''
+@finder(class_='phone hidden')
+def get_phone_for_offer(items):
+    """ Parse phone information
+
+    :param markup: Source of offer web page
+    :type markup: str
+    :return: phone number to poster
+    :rtype: str
+    """
+    return items[0].text
+
+
+@finder(class_=re.compile(r'image\d+'))
+def get_images_for_offer(items):
+    """ Parse list of images of offer
+
+    :param markup: Source of offer web page
+    :type markup: str
+    :return: list  of images or empty list if  there is no image
+    :rtype: list
+    """
+    return [
+        link.img.get('data-original').replace('/91/64/4/', '/1280/768/16/')
+        for link in items
+    ]
+'''
 
 def get_phone_for_offer(markup):
     """ Parse phone information

@@ -4,6 +4,9 @@
 from bs4 import BeautifulSoup
 import json
 from urllib.parse import quote
+
+from scrapper_helpers.utils import caching, key_md5
+
 from .utils import URL, get_content_from_source, encode_text_to_url
 import logging
 

@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import logging
+
 import requests
 from urllib.parse import quote
 
 from bs4 import BeautifulSoup
 
 from . import BASE_URL
-from scrapper_helpers.utils import replace_all, get_random_user_agent
+from scrapper_helpers.utils import replace_all, get_random_user_agent, caching, key_md5
 
 log = logging.getLogger(__file__)
 POLISH_CHARACTERS_MAPPING = {"ą": "a", "ć": "c", "ę": "e", "ł": "l", "ń": "n", "ó": "o", "ś": "s", "ż": "z", "ź": "z"}
@@ -90,6 +91,7 @@ class URL:
         return get_max_page(self.get_url())
 
 
+@caching(key_func=key_md5)
 def get_content_from_source(url):
     """ Connects with given url
 
@@ -106,3 +108,27 @@ def get_content_from_source(url):
         log.warning('Request for {0} failed. Error: {1}'.format(url, e))
         return None
     return response
+
+'''
+def caching(key_func=default_key_func):
+    """A decorator that creates local dumps of the decorated function's return values for given parameters.
+    It can take a key_func argument that determines the name of the output file."""
+
+    def caching_func(func):
+        if DEBUG:
+            def decorated(*args, **kwargs):
+                key = key_func(args, kwargs)
+                if Cache.get(key):
+                    return Cache.get(key)
+                response = func(*args, **kwargs)
+                Cache.set(key, response)
+                return response
+
+            return decorated
+        else:
+            return func
+
+    return caching_func
+
+'''
+# def finder(markup, key):
