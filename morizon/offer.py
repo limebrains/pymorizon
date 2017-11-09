@@ -87,6 +87,20 @@ def get_description_for_offer(markup):
     return description.text
 
 
+def get_gps_for_offer(markup):
+    google_map = markup.find('div', class_='GoogleMap')
+    if not google_map: return None
+    lat = google_map.get('data-lat')
+    long = google_map.get('data-long')
+    gps = (lat,long)
+    return gps
+
+
+def get_voivodeship_for_offer(markup):
+    nav = markup.find(class_='breadcrumbs').text.split('\n\n')
+    return nav[3]
+
+
 def get_offer_data(url):
     markup = BeautifulSoup(get_content_from_source(url).content, 'html.parser')
 
@@ -95,11 +109,13 @@ def get_offer_data(url):
         'surface': get_surface_for_offer(markup),
         'rooms': get_rooms_for_offer(markup),
         'floor': get_floor_for_offer(markup),
+        'voivodeship': get_voivodeship_for_offer(markup),
         'city': get_city_for_offer(markup),
         'street': get_street_for_offer(markup),
         'phone': get_phone_for_offer(markup),
         'date_added': get_date_for_offer(markup),
         'poster_name': get_poster_for_offer(markup),
+        'gps': get_gps_for_offer(markup),
         'description': get_description_for_offer(markup),
         'images': get_images_for_offer(markup),
         'url': url
