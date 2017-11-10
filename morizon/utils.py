@@ -4,7 +4,7 @@
 import logging
 
 import requests
-from urllib.parse import quote
+from urllib.parse import quote, urlparse, unquote
 
 from bs4 import BeautifulSoup
 
@@ -13,7 +13,8 @@ from scrapper_helpers.utils import replace_all, get_random_user_agent, caching, 
 
 log = logging.getLogger(__file__)
 POLISH_CHARACTERS_MAPPING = {"ą": "a", "ć": "c", "ę": "e", "ł": "l", "ń": "n", "ó": "o", "ś": "s", "ż": "z", "ź": "z"}
-
+POSSIBLE_CATEGORIES = ['mieszkania', 'domy', 'komercyjne', 'dzialki', 'garaze', 'pokoje']
+POSSIBLE_TRANSACTIONS = ['do-wynajecia']
 
 def get_max_page(url):
     """ Reads total page number on Morizon search page
@@ -72,16 +73,41 @@ class URL:
         url = BASE_URL
         if self.transaction_type:
             url += '/' + self.transaction_type
-        url += '/' + self.category
+        url += '/' + encode_text_to_url(self.category)
         if self.city:
             url += '/' + encode_text_to_url(self.city)
         if self.street:
             url += '/' + encode_text_to_url(self.street)
-        url += '/?page={0}'.format(self.page)
+        url += '/?page={0}&'.format(self.page)
         if self.filters and len(self.filters) > 0:
             for i, param in enumerate(self.filters):
                 url += "ps{0}={1}&".format(quote(param), self.filters[param])
         return url
+
+    @classmethod
+    def from_string(cls, url):
+        parsed_url = urlparse(url)
+        path_parts = parsed_url.path.split('/')[1:-1]
+        transaction, category, city, street = None, 'nieruchomosci', None, None
+        for i, path_part in enumerate(path_parts):
+            if path_part == 'nieruchomosci':
+                pass
+            elif path_part in POSSIBLE_TRANSACTIONS:
+                transaction = path_part
+            elif path_part in POSSIBLE_CATEGORIES:
+                category = path_part
+            elif not city:
+                city = path_part
+            else:
+                street = path_part
+
+        filters = {}
+        query_params = parsed_url.query.split('ps')[1:]
+        for i, query_param in enumerate(query_params):
+            query_param, value = replace_all(query_param, {'%5B': '[', '%5D': ']', '&': ''}).split('=')
+            filters[query_param] = value
+
+        return cls(category, city, street, transaction, filters)
 
     def next_page(self):
         self.page += 1
@@ -109,26 +135,15 @@ def get_content_from_source(url):
         return None
     return response
 
-'''
-def caching(key_func=default_key_func):
-    """A decorator that creates local dumps of the decorated function's return values for given parameters.
-    It can take a key_func argument that determines the name of the output file."""
 
-    def caching_func(func):
-        if DEBUG:
-            def decorated(*args, **kwargs):
-                key = key_func(args, kwargs)
-                if Cache.get(key):
-                    return Cache.get(key)
-                response = func(*args, **kwargs)
-                Cache.set(key, response)
-                return response
-
-            return decorated
-        else:
-            return func
-
-    return caching_func
-
-'''
-# def finder(markup, key):
+def finder(many=True, *finder_args, **finder_kwargs):
+    def decorator(fun):
+        def wrapper(markup, *args, **kwargs):
+            if many:
+                items = markup.find_all(*finder_args, **finder_kwargs)
+            else:
+                items = markup.find(*finder_args, **finder_kwargs)
+            kwargs.update({'markup': markup})
+            return fun(items, *args, **kwargs)
+        return wrapper
+    return decorator

@@ -38,6 +38,8 @@ def get_category(category='nieruchomosci', city=None, street=None, transaction_t
         if filters:
             filters['page'] = 1
         url = URL(category, city, street, transaction_type, filters=filters)
+    else:
+        url = URL.from_string(url)
     offers = []
     max_num_of_pages = url.max_num_of_pages()
     for i in range(1, max_num_of_pages + 1):
