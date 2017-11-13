@@ -17,10 +17,13 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
 
+sys.path.insert(0, os.path.abspath('.'))
+cwd = os.getcwd()
+project_root = os.path.dirname(cwd)
+sys.path.insert(0, project_root)
 
 # -- General configuration ------------------------------------------------
 
@@ -32,8 +35,9 @@
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.githubpages']
+              'sphinx.ext.doctest',
+              'sphinx.ext.viewcode',
+              'sphinx.ext.githubpages']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -57,7 +61,7 @@ author = 'Michał Bartlakowski'
 # built documents.
 #
 # The short X.Y version.
-version = ''
+version = '0.0.1'
 # The full version, including alpha/beta/rc tags.
 release = '0.0.1'
 
@@ -78,7 +82,6 @@ pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
-
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -110,12 +113,10 @@ html_sidebars = {
     ]
 }
 
-
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'pymorizondoc'
-
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -145,7 +146,6 @@ latex_documents = [
      'Michał Bartlakowski', 'manual'),
 ]
 
-
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
@@ -155,7 +155,6 @@ man_pages = [
      [author], 1)
 ]
 
-
 # -- Options for Texinfo output -------------------------------------------
 
 # Grouping the document tree into Texinfo files. List of tuples
@@ -163,9 +162,6 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'pymorizon', 'pymorizon Documentation',
-     author, 'pymorizon', 'One line description of project.',
+     author, 'pymorizon', 'Scrapper for Morizon',
      'Miscellaneous'),
 ]
-
-
-

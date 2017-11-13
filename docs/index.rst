@@ -11,6 +11,11 @@ Welcome to pymorizon's documentation!
    :caption: Contents:
 
 
+   category
+   offer
+   utils
+
+
 
 Indices and tables
 ==================
