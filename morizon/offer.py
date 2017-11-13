@@ -213,7 +213,7 @@ def get_offer_data(url):
     :return: Dictionary with details of an offer
     :rtype: dict
     """
-    markup = BeautifulSoup(get_content_from_source(url).content, 'html.parser')
+    markup = BeautifulSoup(get_content_from_source(url), 'html.parser')
 
     return {
         'price': get_price_for_offer(markup),

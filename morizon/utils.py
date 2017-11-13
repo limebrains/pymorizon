@@ -24,7 +24,7 @@ def get_max_page(url):
     :return: number on sub web pages for search
     :rtype: int
     """
-    markup = BeautifulSoup(get_content_from_source(url).content, 'html.parser')
+    markup = BeautifulSoup(get_content_from_source(url), 'html.parser')
     last_page = markup.find_all('a', {'class': 'navigate next'})
     if not last_page:
         return 1
@@ -133,7 +133,7 @@ def get_content_from_source(url):
     except requests.HTTPError as e:
         log.warning('Request for {0} failed. Error: {1}'.format(url, e))
         return None
-    return response
+    return response.content
 
 
 def finder(many=True, *finder_args, **finder_kwargs):

@@ -58,8 +58,7 @@ def get_offers_from_page(url):
     :return: List of urls of offers from page
     :rtype: list
     """
-    print(url)
-    markup = BeautifulSoup(get_content_from_source(url).content, 'html.parser')
+    markup = BeautifulSoup(get_content_from_source(url), 'html.parser')
     links = markup.find_all('a', {'class': 'property_link'})
     offers = []
     for link in links:
