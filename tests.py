@@ -1,8 +1,7 @@
+# pytest tests.py  -vv --pdb --cov=morizon --cov-report=term-missing
 import pytest
 import sys
 
-import time
-from bs4 import BeautifulSoup
 if sys.version_info < (3, 3):
     from mock import mock
 else:
@@ -11,13 +10,11 @@ from morizon.utils import *
 from morizon.offer import *
 
 
-OFFER_URL = 'https://www.morizon.pl/oferta/wynajem-mieszkanie-sopot-wyscigi-lokietka-wladyslawa-58m2-mzn2028497369'
-
-
 @pytest.fixture
 def offer_markup():
-    response = get_content_from_source(OFFER_URL)
-    html_markup = BeautifulSoup(response.content, "html.parser")
+    with open('offer_source.htm', 'r') as page:
+        page_markup = page.read()
+    html_markup = BeautifulSoup(page_markup, "html.parser")
     return html_markup
 
 @pytest.mark.parametrize('args, filter, expected_value', [
@@ -51,23 +48,23 @@ def test_encode_text(text, expected_value):
 
 
 def test_get_area(offer_markup):
-    assert get_surface_for_offer(offer_markup) == 58.0
+    assert get_surface_for_offer(offer_markup) == 56.34
 
 
 def test_get_floor(offer_markup):
-    assert get_floor_for_offer(offer_markup) == 3
+    assert get_floor_for_offer(offer_markup) == 0
 
 
 def test_get_price(offer_markup):
-    assert get_price_for_offer(offer_markup) == 2100.0
+    assert get_price_for_offer(offer_markup) == 1600.0
 
 
 def test_get_phone(offer_markup):
-    assert get_phone_for_offer(offer_markup) == '793730792'
+    assert get_phone_for_offer(offer_markup) == '508 861 700'
 
 
 def test_get_voivodeship(offer_markup):
-    assert get_voivodeship_for_offer(offer_markup) == 'pomorskie'
+    assert get_voivodeship_for_offer(offer_markup) == 'zachodniopomorskie'
 
 
 def test_get_images(offer_markup):
