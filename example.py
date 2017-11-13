@@ -8,11 +8,9 @@ url = 'https://www.morizon.pl/do-wynajecia/mieszkania/gdynia/witomino-lesniczowk
 
 offers = get_category('mieszkania', 'Sopot', transaction_type='do-wynajecia',)
 # offers = get_category(url=url)
-# print(len(offers))
-# for el in offers:
-#     print(el)
 
-with open('output.json', 'w') as output_file:
+
+with open('tests/output.json', 'w') as output_file:
     output_file.write('[')
     for urls_from_offers in offers:
         data = get_offer_data(urls_from_offers)

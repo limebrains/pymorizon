@@ -3,11 +3,11 @@
 from distutils.core import setup
 
 setup(
-    name='pyolx',
-    version='0.0.3',
-    description="pyolx - python wrapper for olx",
+    name='pymorizon',
+    version='0.0.1',
+    description="pymorizon - python wrapper for morizon",
     author='LimeBrains',
     author_email='mail@limebrains.com',
-    url='https://github.com/limebrains/pyolx',
-    packages=['olx'],
+    url='https://github.com/limebrains/pymorizon',
+    packages=['morizon'],
 )

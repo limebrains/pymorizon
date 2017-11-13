@@ -12,7 +12,7 @@ from morizon.offer import *
 
 @pytest.fixture
 def offer_markup():
-    with open('offer_source.htm', 'r') as page:
+    with open('tests/offer_source.htm', 'r') as page:
         page_markup = page.read()
     html_markup = BeautifulSoup(page_markup, "html.parser")
     return html_markup
@@ -72,3 +72,11 @@ def test_get_images(offer_markup):
     assert isinstance(images, list)
     for image in images:
         assert 'https://img' in image
+
+
+@pytest.fixture
+def offers_page():
+    with open('tests/offers_witomino.htm', 'r') as page:
+        page_markup = page.read()
+    html_markup = BeautifulSoup(page_markup, 'html.parser')
+    return html_markup
