@@ -88,20 +88,18 @@ def offers_gdynia():
 
 @pytest.fixture
 def offers_szczecin():
-    with open('test_data/offers_szczecin.htm', 'r') as page:
+    with open('test_data/offers_szczecin.html', 'r') as page:
         page_markup = page.read()
     return page_markup
 
 
-def test_get_max_page():
+def test_get_max_page(offers_szczecin):
     with mock.patch("morizon.utils.get_content_from_source") as get_content:
-        with mock.patch("morizon.utils.get_max_page") as get_max_page:
-            get_content.return_value = offers_szczecin
-            assert get_max_page()
+        get_content.return_value = offers_szczecin
+        assert morizon.utils.get_max_page('https://www.morizon.pl/do-wynajecia/mieszkania/gdynia/witomino-lesniczowka/?page=1&ps%5Bnumber_of_rooms_from%5D=2&') == 3
 
 
-def test_get_offers_from_page():
+def test_get_offers_from_page(offers_gdynia):
     with mock.patch("morizon.utils.get_content_from_source") as get_content:
-        with mock.patch("morizon.category.get_offers_from_page") as get_offers:
-            get_content.return_value = offers_gdynia
-            assert get_offers()
+        get_content.return_value = offers_gdynia
+        assert type(morizon.category.get_offers_from_page('https://www.morizon.pl/do-wynajecia/mieszkania/gdynia/witomino-lesniczowka/?page=1')) == type([])
