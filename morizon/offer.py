@@ -11,8 +11,9 @@ from morizon.utils import get_content_from_source, finder
 def get_price_for_offer(item, *args, **kwargs):
     """ Parse price information
 
-    :param markup: Source of offer web page
-    :type markup: str str
+    :param item:
+    :param args:
+    :param kwargs:
     :return: price of offer
     :rtype: float
     """
@@ -24,8 +25,9 @@ def get_price_for_offer(item, *args, **kwargs):
 def get_surface_for_offer(item, *args, **kwargs):
     """ Parse surface area of property in offer
 
-    :param markup: Source of offer web page
-    :type markup: str
+    :param item:
+    :param args:
+    :param kwargs:
     :return: surface area of property
     :rtype: float
     """
@@ -39,8 +41,9 @@ def get_surface_for_offer(item, *args, **kwargs):
 def get_rooms_for_offer(item, *args, **kwargs):
     """ Parse number of rooms in property
 
-    :param markup: Source of offer web page
-    :type markup: str
+    :param item:
+    :param args:
+    :param kwargs:
     :return: number of rooms
     :rtype: int
     """
@@ -55,8 +58,9 @@ def get_rooms_for_offer(item, *args, **kwargs):
 def get_floor_for_offer(item, *args, **kwargs):
     """ Parse floor information
 
-    :param markup: Source of offer web page
-    :type markup: str
+    :param item:
+    :param args:
+    :param kwargs:
     :return: number of floor
     :rtype: int
     """
@@ -72,8 +76,9 @@ def get_floor_for_offer(item, *args, **kwargs):
 def get_city_for_offer(item, *args, **kwargs):
     """ Parse city information
 
-    :param markup: Source of offer web page
-    :type markup: str
+    :param item:
+    :param args:
+    :param kwargs:
     :return: name of city
     :rtype: str
     """
@@ -85,8 +90,9 @@ def get_city_for_offer(item, *args, **kwargs):
 def get_street_for_offer(items, *args, **kwargs):
     """ Parse street information
 
-    :param markup: Source of offer web page
-    :type markup: str
+    :param items:
+    :param args:
+    :param kwargs:
     :return: name of street
     :rtype: str
     """
@@ -99,8 +105,9 @@ def get_street_for_offer(items, *args, **kwargs):
 def get_phone_for_offer(items, *args, **kwargs):
     """ Parse phone information
 
-    :param markup: Source of offer web page
-    :type markup: str
+    :param items:
+    :param args:
+    :param kwargs:
     :return: phone number to poster
     :rtype: str
     """
@@ -111,8 +118,9 @@ def get_phone_for_offer(items, *args, **kwargs):
 def get_images_for_offer(items, *args, **kwargs):
     """ Parse list of images of offer
 
-    :param markup: Source of offer web page
-    :type markup: str
+    :param items:
+    :param args:
+    :param kwargs:
     :return: list  of images or empty list if  there is no image
     :rtype: list
     """
@@ -126,8 +134,9 @@ def get_images_for_offer(items, *args, **kwargs):
 def get_date_for_offer(item, *args, **kwargs):
     """ Parse date information
 
-    :param markup: Source of offer web page
-    :type markup: str
+    :param item:
+    :param args:
+    :param kwargs:
     :return: Date of adding offer
     :rtype: int
     """
@@ -141,8 +150,9 @@ def get_date_for_offer(item, *args, **kwargs):
 def get_poster_for_offer(item, *args, **kwargs):
     """ Parse poster name
 
-    :param markup: Source of offer web page
-    :type markup: str
+    :param item:
+    :param args:
+    :param kwargs:
     :return: name of the poster
     :rtype: str
     """
@@ -155,8 +165,9 @@ def get_poster_for_offer(item, *args, **kwargs):
 def get_description_for_offer(item, *args, **kwargs):
     """ Parse description od offer
 
-    :param markup: Source of offer web page
-    :type markup: str
+    :param item:
+    :param args:
+    :param kwargs:
     :return: description
     :rtype: str
     """
@@ -167,8 +178,9 @@ def get_description_for_offer(item, *args, **kwargs):
 def get_gps_for_offer(item, *args, **kwargs):
     """ Parse latitude and longitude
 
-    :param markup: Source of offer web page
-    :type markup: str
+    :param item:
+    :param args:
+    :param kwargs:
     :return: tuple with geographical coordinates or None if can't find
     :rtype: tuple, None
     """
@@ -183,8 +195,9 @@ def get_gps_for_offer(item, *args, **kwargs):
 def get_voivodeship_for_offer(item, *args, **kwargs):
     """ Parse voivodeship information
 
-    :param markup: Source of offer web page
-    :type markup: str
+    :param item:
+    :param args:
+    :param kwargs:
     :return: name of voivodeship
     :rtype: str
     """

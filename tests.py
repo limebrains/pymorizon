@@ -11,7 +11,7 @@ from morizon.utils import *
 from morizon.offer import *
 
 
-OFFER_URL = 'https://www.morizon.pl/oferta/wynajem-mieszkanie-sopot-wyscigi-wladyslawa-lokietka-58m2-mzn2028877346'
+OFFER_URL = 'https://www.morizon.pl/oferta/wynajem-mieszkanie-sopot-wyscigi-lokietka-wladyslawa-58m2-mzn2028497369'
 
 
 @pytest.fixture
@@ -64,11 +64,15 @@ def test_get_floor(offer_markup):
 
 
 def test_get_price(offer_markup):
-    assert get_price_for_offer(offer_markup) == 2800.0
+    assert get_price_for_offer(offer_markup) == 2100.0
 
 
 def test_get_phone(offer_markup):
-    assert get_phone_for_offer(offer_markup) == '530292133'
+    assert get_phone_for_offer(offer_markup) == '793730792'
+
+
+def test_get_voivodeship(offer_markup):
+    assert get_voivodeship_for_offer(offer_markup) == 'pomorskie'
 '''
 def add(a, b):
     time.sleep(2)
