@@ -1,13 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 import logging
-
 import requests
-from urllib.parse import quote, urlparse, unquote
-
+from urllib.parse import quote, urlparse
 from bs4 import BeautifulSoup
-
 from . import BASE_URL
 from scrapper_helpers.utils import replace_all, get_random_user_agent, caching, key_md5
 

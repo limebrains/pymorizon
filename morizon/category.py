@@ -1,14 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from bs4 import BeautifulSoup
-import json
-from urllib.parse import quote
+import logging
 
-from scrapper_helpers.utils import caching, key_md5
+from bs4 import BeautifulSoup
 
 from .utils import URL, get_content_from_source, encode_text_to_url
-import logging
 
 log = logging.getLogger(__file__)
 logging.basicConfig(level=logging.DEBUG)

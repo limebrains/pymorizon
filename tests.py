@@ -103,3 +103,9 @@ def test_get_offers_from_page(offers_gdynia):
     with mock.patch("morizon.utils.get_content_from_source") as get_content:
         get_content.return_value = offers_gdynia
         assert type(morizon.category.get_offers_from_page('https://www.morizon.pl/do-wynajecia/mieszkania/gdynia/witomino-lesniczowka/?page=1')) == type([])
+
+
+def test_get_offer_data(offer_markup):
+    with mock.patch("morizon.utils.get_content_from_source") as get_content:
+        get_content.return_value = offer_markup
+        assert type(morizon.offer.get_offer_data('https://www.morizon.pl/oferta/wynajem-mieszkanie-szczecin-pogodno-somosierry-51m2-mzn2028886916')) == type({})
