@@ -12,6 +12,7 @@ POLISH_CHARACTERS_MAPPING = {"ą": "a", "ć": "c", "ę": "e", "ł": "l", "ń": "
 POSSIBLE_CATEGORIES = ['mieszkania', 'domy', 'komercyjne', 'dzialki', 'garaze', 'pokoje']
 POSSIBLE_TRANSACTIONS = ['do-wynajecia']
 
+
 def get_max_page(url):
     """ Reads total page number on Morizon search page
 
@@ -29,7 +30,8 @@ def get_max_page(url):
 
 
 def encode_text_to_url(text):
-    """ Change text to lower cases, gets rid of polish characters replacing them with simplified version, replaces spaces with dashes
+    """ Change text to lower cases, gets rid of polish characters replacing them with simplified version,
+    replaces spaces with dashes
 
     :param text: raw text
     :type text: str
@@ -133,6 +135,13 @@ def get_content_from_source(url):
 
 
 def finder(many=True, *finder_args, **finder_kwargs):
+    """ Search for an element(or elements depending on variable 'many') with certain key(tag, class, id, ...)
+        in a web page markup
+
+    :param many: decide whether searching for one or more elements
+    :param finder_args: key to find
+    :return: element or list of elements
+    """
     def decorator(fun):
         def wrapper(markup, *args, **kwargs):
             if many:
