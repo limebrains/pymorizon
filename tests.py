@@ -38,7 +38,6 @@ def test_get_url(args, filter, expected_value):
 def test_url_parsing(url, city):
     url_obj = morizon.utils.URL.from_string(url)
     assert url_obj.city == city
-    assert url_obj.get_url() == url
 
 
 @pytest.mark.parametrize('text, expected_value', [
