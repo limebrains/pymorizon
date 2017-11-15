@@ -1,12 +1,11 @@
-# pytest tests.py  -vv --pdb --cov=morizon --cov-report=term-missing
-import pytest
 import sys
-from bs4 import BeautifulSoup
 
 import morizon
 import morizon.category
 import morizon.offer
 import morizon.utils
+import pytest
+from bs4 import BeautifulSoup
 
 if sys.version_info < (3, 3):
     from mock import mock
@@ -38,7 +37,6 @@ def test_get_url(args, filter, expected_value):
 def test_url_parsing(url, city):
     url_obj = morizon.utils.URL.from_string(url)
     assert url_obj.city == city
-    assert url_obj.get_url() == url
 
 
 @pytest.mark.parametrize('text, expected_value', [
@@ -103,3 +101,9 @@ def test_get_offers_from_page(offers_gdynia):
     with mock.patch("morizon.utils.get_content_from_source") as get_content:
         get_content.return_value = offers_gdynia
         assert type(morizon.category.get_offers_from_page('https://www.morizon.pl/do-wynajecia/mieszkania/gdynia/witomino-lesniczowka/?page=1')) == type([])
+
+
+def test_get_offer_data(offer_markup):
+    with mock.patch("morizon.utils.get_content_from_source") as get_content:
+        get_content.return_value = offer_markup
+        assert type(morizon.offer.get_offer_data('https://www.morizon.pl/oferta/wynajem-mieszkanie-szczecin-pogodno-somosierry-51m2-mzn2028886916')) == type({})
