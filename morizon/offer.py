@@ -1,10 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import re
 import datetime as dt
+import re
+
 from bs4 import BeautifulSoup
 from scrapper_helpers.utils import replace_all
-from morizon.utils import get_content_from_source, finder
+
+from morizon.utils import finder, get_content_from_source
 
 
 @finder(class_='paramIconPrice', many=False)
@@ -142,7 +144,8 @@ def get_date_for_offer(item, *args, **kwargs):
     """
     date_added = re.findall(r'\d\d-\d\d-\d\d\d\d', item.get('content'))[0]
     date_parts = date_added.split('-')
-    date_in_second = int((dt.datetime(int(date_parts[2]), int(date_parts[1]), int(date_parts[0])) - dt.datetime(1970, 1, 1)).total_seconds())
+    date_in_second = int((dt.datetime(int(date_parts[2]), int(date_parts[1]),
+                                      int(date_parts[0])) - dt.datetime(1970, 1, 1)).total_seconds())
     return date_in_second
 
 
@@ -184,7 +187,8 @@ def get_gps_for_offer(item, *args, **kwargs):
     :return: tuple with geographical coordinates or None if can't find
     :rtype: tuple, None
     """
-    if not item: return None
+    if not item:
+        return None
     lat = item.get('data-lat')
     long = item.get('data-long')
     gps = (lat, long)

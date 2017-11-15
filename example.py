@@ -10,7 +10,7 @@ offers = get_category('mieszkania', 'Sopot', transaction_type='do-wynajecia',)
 # offers = get_category(url=url)
 
 
-with open('tests/output.json', 'w') as output_file:
+with open('test_data/output.json', 'w') as output_file:
     output_file.write('[')
     for urls_from_offers in offers:
         data = get_offer_data(urls_from_offers)
