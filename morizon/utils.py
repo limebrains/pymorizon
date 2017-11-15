@@ -134,23 +134,3 @@ def get_content_from_source(url):
         log.warning('Request for {0} failed. Error: {1}'.format(url, e))
         return None
     return response.content
-
-
-def finder(many=True, *finder_args, **finder_kwargs):
-    """ Search for an element(or elements depending on variable 'many') with certain key(tag, class, id, ...)
-        in a web page markup
-
-    :param many: decide whether searching for one or more elements
-    :param finder_args: key to find
-    :return: element or list of elements
-    """
-    def decorator(fun):
-        def wrapper(markup, *args, **kwargs):
-            if many:
-                items = markup.find_all(*finder_args, **finder_kwargs)
-            else:
-                items = markup.find(*finder_args, **finder_kwargs)
-            kwargs.update({'markup': markup})
-            return fun(items, *args, **kwargs)
-        return wrapper
-    return decorator
