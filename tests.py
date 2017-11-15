@@ -1,4 +1,3 @@
-# pytest tests.py  -vv --pdb --cov=morizon --cov-report=term-missing
 import sys
 
 import morizon

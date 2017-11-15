@@ -4,8 +4,9 @@ import datetime as dt
 import re
 
 from bs4 import BeautifulSoup
-from morizon.utils import finder, get_content_from_source
 from scrapper_helpers.utils import replace_all
+
+from morizon.utils import finder, get_content_from_source
 
 
 @finder(class_='paramIconPrice', many=False)
