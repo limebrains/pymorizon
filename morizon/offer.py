@@ -187,7 +187,8 @@ def get_gps_for_offer(item, *args, **kwargs):
     :return: tuple with geographical coordinates or None if can't find
     :rtype: tuple, None
     """
-    if not item: return None
+    if not item:
+        return None
     lat = item.get('data-lat')
     long = item.get('data-long')
     gps = (lat, long)
