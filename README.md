@@ -5,6 +5,7 @@ Python scrapper for morizon
 [![Build Status](https://travis-ci.org/limebrains/pymorizon.svg?branch=master)](https://travis-ci.org/limebrains/pymorizon)
 [![Documentation Status](https://readthedocs.org/projects/pymorizon/badge/?version=latest)](http://pymorizon.readthedocs.io/en/latest/?badge=latest)
 
+
 # Running
 
 ### Installation
@@ -26,4 +27,5 @@ tox
 ### Tests
 ```
 py.test tests.py -vv --pdb
+
 ```

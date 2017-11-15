@@ -1,20 +1,19 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 import logging
+from urllib.parse import quote, urlparse
 
 import requests
-from urllib.parse import quote, urlparse, unquote
-
 from bs4 import BeautifulSoup
+from scrapper_helpers.utils import caching, get_random_user_agent, key_md5, replace_all
 
 from . import BASE_URL
-from scrapper_helpers.utils import replace_all, get_random_user_agent, caching, key_md5
 
 log = logging.getLogger(__file__)
 POLISH_CHARACTERS_MAPPING = {"ą": "a", "ć": "c", "ę": "e", "ł": "l", "ń": "n", "ó": "o", "ś": "s", "ż": "z", "ź": "z"}
 POSSIBLE_CATEGORIES = ['mieszkania', 'domy', 'komercyjne', 'dzialki', 'garaze', 'pokoje']
 POSSIBLE_TRANSACTIONS = ['do-wynajecia']
+
 
 def get_max_page(url):
     """ Reads total page number on Morizon search page
@@ -33,7 +32,8 @@ def get_max_page(url):
 
 
 def encode_text_to_url(text):
-    """ Change text to lower cases, gets rid of polish characters replacing them with simplified version, replaces spaces with dashes
+    """ Change text to lower cases, gets rid of polish characters replacing them with simplified version,
+    replaces spaces with dashes
 
     :param text: raw text
     :type text: str
@@ -134,16 +134,3 @@ def get_content_from_source(url):
         log.warning('Request for {0} failed. Error: {1}'.format(url, e))
         return None
     return response.content
-
-
-def finder(many=True, *finder_args, **finder_kwargs):
-    def decorator(fun):
-        def wrapper(markup, *args, **kwargs):
-            if many:
-                items = markup.find_all(*finder_args, **finder_kwargs)
-            else:
-                items = markup.find(*finder_args, **finder_kwargs)
-            kwargs.update({'markup': markup})
-            return fun(items, *args, **kwargs)
-        return wrapper
-    return decorator
