@@ -10,7 +10,7 @@ Welcome to pymorizon's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
+   api
    category
    offer
    utils
