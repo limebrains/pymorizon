@@ -1,12 +1,12 @@
 # pytest tests.py  -vv --pdb --cov=morizon --cov-report=term-missing
-import pytest
 import sys
-from bs4 import BeautifulSoup
 
 import morizon
 import morizon.category
 import morizon.offer
 import morizon.utils
+import pytest
+from bs4 import BeautifulSoup
 
 if sys.version_info < (3, 3):
     from mock import mock

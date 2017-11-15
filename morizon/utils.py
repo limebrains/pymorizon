@@ -1,11 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import logging
-import requests
 from urllib.parse import quote, urlparse
+
+import requests
 from bs4 import BeautifulSoup
+from scrapper_helpers.utils import caching, get_random_user_agent, key_md5, replace_all
+
 from . import BASE_URL
-from scrapper_helpers.utils import replace_all, get_random_user_agent, caching, key_md5
 
 log = logging.getLogger(__file__)
 POLISH_CHARACTERS_MAPPING = {"ą": "a", "ć": "c", "ę": "e", "ł": "l", "ń": "n", "ó": "o", "ś": "s", "ż": "z", "ź": "z"}

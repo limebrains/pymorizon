@@ -5,7 +5,7 @@ import logging
 
 from bs4 import BeautifulSoup
 
-from .utils import URL, get_content_from_source, encode_text_to_url
+from .utils import URL, encode_text_to_url, get_content_from_source
 
 log = logging.getLogger(__file__)
 logging.basicConfig(level=logging.DEBUG)
