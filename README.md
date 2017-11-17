@@ -9,9 +9,13 @@ Python scrapper for morizon
 # Running
 
 ### Installation
-
+Version from https://pypi.python.org/pypi/pymorizon:
 ```
-pip install -r requirements.txt
+pip install pymorizon
+```
+Latest version from git:
+```
+pip install git+git://github.com/limebrains/pymorizon.git
 ```
 
 ### Example script
