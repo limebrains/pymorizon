@@ -80,8 +80,8 @@ class URL:
             url += '/' + encode_text_to_url(self.street)
         url += '/?page={0}&'.format(self.page)
         if self.filters and len(self.filters) > 0:
-            for i, param in enumerate(self.filters):
-                url += "ps{0}={1}&".format(quote(param), self.filters[param])
+            for param, value in sorted(self.filters.items(), key=lambda item: item[0]):
+                url += "ps{0}={1}&".format(quote(param), value)
         return url
 
     @classmethod
