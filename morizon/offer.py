@@ -1,11 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import datetime as dt
-<<<<<<< HEAD
 import json
 
-=======
->>>>>>> c15b5eacc67719b8a88687139d55dda118db50b5
 import re
 
 from bs4 import BeautifulSoup
@@ -229,7 +226,6 @@ def get_offer_data(url):
     :return: Dictionary with details of an offer
     :rtype: dict
     """
-    # content = get_content_from_source(url)
     markup = BeautifulSoup(get_content_from_source(url), 'html.parser')
     meta_data = get_meta_data(markup)
 
