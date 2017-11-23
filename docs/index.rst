@@ -16,6 +16,16 @@ Welcome to pymorizon's documentation!
    utils
 
 
+   category
+   offer
+   utils
+
+
+   category
+   offer
+   utils
+
+
 
 Indices and tables
 ==================
