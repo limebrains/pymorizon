@@ -219,23 +219,6 @@ def get_meta_data(markup):
     return data
 
 
-<<<<<<< HEAD
-def get_gps_for_offer(markup):
-    google_map = markup.find('div', class_='GoogleMap')
-    if not google_map: return None
-    lat = google_map.get('data-lat')
-    long = google_map.get('data-long')
-    gps = (lat,long)
-    return gps
-
-
-def get_voivodeship_for_offer(markup):
-    nav = markup.find(class_='breadcrumbs').text.split('\n\n')
-    return nav[3]
-
-
-=======
->>>>>>> 22661efb78d063a34c839dcb0b98362b684db48b
 def get_offer_data(url):
     """ Parse data from offer page url
 
