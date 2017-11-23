@@ -212,8 +212,9 @@ def get_voivodeship_for_offer(item, *args, **kwargs):
 
 
 def get_meta_data(markup):
-    data = str(markup).split('__layer.push({"property":')[1].split(',"company":')[0]
-    print(data)
+    data = str(markup).split('__layer.push({"property":')[1]
+    end = re.findall(r',"company"|,"event"', data)[0]
+    data = data.split(end)[0]
     data = json.loads(data)
     return data
 
