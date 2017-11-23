@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import datetime as dt
+import json
+
 import re
 
 from bs4 import BeautifulSoup
@@ -209,6 +211,13 @@ def get_voivodeship_for_offer(item, *args, **kwargs):
     return replace_all(nav[3], {' ': ''})
 
 
+def get_meta_data(markup):
+    data = str(markup).split('__layer.push({"property":')[1].split(',"company":')[0]
+    print(data)
+    data = json.loads(data)
+    return data
+
+
 def get_offer_data(url):
     """ Parse data from offer page url
 
@@ -218,8 +227,10 @@ def get_offer_data(url):
     :rtype: dict
     """
     markup = BeautifulSoup(get_content_from_source(url), 'html.parser')
+    meta_data = get_meta_data(markup)
 
     return {
+        'id': meta_data.get('id'),
         'price': get_price_for_offer(markup),
         'surface': get_surface_for_offer(markup),
         'rooms': get_rooms_for_offer(markup),

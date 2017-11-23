@@ -38,7 +38,7 @@ def encode_text_to_url(text):
     :param text: raw text
     :type text: str
     :return: encoded text which can be used in url
-    :rtpe: str
+    :rtype: str
     """
     replace_dict = POLISH_CHARACTERS_MAPPING
     replace_dict.update({' ': '-'})
